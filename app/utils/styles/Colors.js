@@ -1,3 +1,9 @@
+export const blueDark = '#172B4D'
+export const blueLight = '#00B8D9'
+export const blueMedium = '#0052CC'
+export const green = '#36B37E'
+export const purple = '#6554C0'
 export const red = '#FF5630'
-export const blue = '#00B8D9'
-export const primaryGradientArray = [red, blue]
+export const white = '#FFFFFF'
+export const yellow = '#FFAB00'
+export const primaryGradientArray = [purple, blueLight]

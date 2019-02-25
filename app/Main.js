@@ -3,50 +3,71 @@ import { StatusBar, StyleSheet, Text, View } from 'react-native'
 import { LinearGradient } from 'expo'
 
 import { primaryGradientArray } from './utils/styles/Colors'
-import { Header } from './components'
+import { Button, Header, Input, SubTitle } from './components'
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  centered: {
-      alignItems: 'center'
-  }
+    container: {
+        flex: 1
+    },
+    centered: {
+        alignItems: 'center'
+    },
+    inputContainer: {
+        marginTop: 40,
+        paddingLeft: 15
+    },
+    list: {
+        flex: 1,
+        marginTop: 70,
+        paddingLeft: 15,
+        paddingRight: 15,
+        marginBottom: 10
+    },
+    scrollableList: {
+        marginTop: 15
+    },
 })
 
 export class Main extends Component {
     state = {
-        time: new Date().getTime()
-    }    
+        inputValue: '',
+    }  
+
     componentDidMount() {
-        this.tick()
     }
-    tick() {
-        this.setState((state) => {
-            return {
-                ...state,
-                time: new Date().getTime()
-            }
+
+    newInputValue = value => {
+        this.setState({
+            inputValue: value
         })
-        setTimeout(() => {  
-            this.tick()
-        }, 200)
     }
+
     render() {
-        const { title, color } = this.props
-        const { time } = this.state
+        const { title } = this.props
+        const { inputValue } = this.state
 
         return (
             <LinearGradient colors={ primaryGradientArray } style={styles.container}>
                 <StatusBar barStyle="light-content" />
                 <View style={ styles.centered }>
-                    <Header title='NMD To Do' />
+                    <Header title={ title } />
                 </View>
-                <View style={ styles.container }>
-                    <Text>{ title } in { color }</Text>
-                    <Text>{ time }</Text>
-                    <Text>NMD - Open up App.js to start working on your app!</Text>
-                </View>
+                <View style={styles.inputContainer}>
+                    <SubTitle subtitle={"What's Next?"} />
+					<Input
+						inputValue={inputValue}
+						onChangeText={this.newInputValue}
+						onDoneAddItem={this.onDoneAddItem}
+					/>
+				</View>
+                <View style={styles.list}>
+					<View style={styles.column}>
+						<SubTitle subtitle={'Recent Notes'} />
+						<View style={styles.deleteAllButton}>
+							<Button deleteAllItems={this.deleteAllItems} />
+						</View>
+					</View>
+				</View>
             </LinearGradient>
         )
     }
