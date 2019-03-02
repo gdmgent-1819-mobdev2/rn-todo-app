@@ -1,2 +1,2 @@
 export * from './Colors'
-export * from './Spaces'
+export * from './Grid'
