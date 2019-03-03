@@ -4,6 +4,8 @@ import { LinearGradient } from 'expo'
 
 import uuid from 'uuid/v1';
 
+import ToDoService, { ToDoContext } from './services'
+
 import { primaryGradientArray } from './utils/styles/Colors'
 import grid, { gutter } from './utils/styles/Grid'
 import { Button, Header, Input, List, SubTitle } from './components'
@@ -33,8 +35,8 @@ export class Main extends Component {
         allItems: {},
         inputValue: '',
         isCompleted: false,
-            loadingItems: false,
-      }
+        loadingItems: false,
+    }
       
     componentDidMount = () => {
         this.loadingItems()
@@ -145,9 +147,11 @@ export class Main extends Component {
         const saveItem = AsyncStorage.setItem('Todos', JSON.stringify(newItem))
     }
     
-      render() {
+    render() {
         const { inputValue, loadingItems, allItems } = this.state
-        const { title } = this.props
+        const { title, todoService } = this.props
+
+        console.log(todoService.items)
 
         return (
             <LinearGradient colors={ primaryGradientArray } style={styles.container}>
@@ -157,39 +161,39 @@ export class Main extends Component {
                 </View>
                 <View style={styles.inputContainer}>
                     <SubTitle subtitle={"What's Next?"} />
-					<Input
-						inputValue={inputValue}
-						onChangeText={this.newInputValue}
-						onDoneAddItem={this.onDoneAddItem}
-					/>
-				</View>
+                    <Input
+                        inputValue={inputValue}
+                        onChangeText={this.newInputValue}
+                        onDoneAddItem={this.onDoneAddItem}
+                    />
+                </View>
                 <View style={styles.list}>
-					<View style={styles.column}>
-						<SubTitle subtitle={'Recent Notes'} />
-						<View style={styles.deleteAllButton}>
-							<Button deleteAllItems={this.deleteAllItems} />
-						</View>
-					</View>
+                    <View style={styles.column}>
+                        <SubTitle subtitle={'Recent Notes'} />
+                        <View style={styles.deleteAllButton}>
+                            <Button deleteAllItems={this.deleteAllItems} />
+                        </View>
+                    </View>
 
-					{loadingItems ? (
-						<ScrollView contentContainerStyle={styles.scrollableList}>
-							{Object.values(allItems)
-								.reverse()
-								.map(item => (
-									<List
-										key={item.id}
-										{...item}
-										deleteItem={this.deleteItem}
-										completeItem={this.completeItem}
-										incompleteItem={this.incompleteItem}
-									/>
-								))}
-						</ScrollView>
-					) : (
-						<ActivityIndicator size="large" color="white" />
-					)}
-				</View>
-            </LinearGradient>
+                    {loadingItems ? (
+                        <ScrollView contentContainerStyle={styles.scrollableList}>
+                            {Object.values(allItems)
+                                .reverse()
+                                .map(item => (
+                                    <List
+                                        key={item.id}
+                                        {...item}
+                                        deleteItem={this.deleteItem}
+                                        completeItem={this.completeItem}
+                                        incompleteItem={this.incompleteItem}
+                                    />
+                                ))}
+                        </ScrollView>
+                    ) : (
+                        <ActivityIndicator size="large" color="white" />
+                    )}
+                </View>
+            </LinearGradient>       
         )
     }
 }
